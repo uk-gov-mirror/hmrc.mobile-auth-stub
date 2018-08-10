@@ -1,21 +1,26 @@
 import play.core.PlayVersion
 import play.sbt.PlayImport._
-import sbt.Keys.libraryDependencies
 import sbt._
 
 object AppDependencies {
 
-  val compile = Seq(
+  private val play25Bootstrap = "1.7.0"
+  private val hmrcTestVersion = "3.0.0"
+  private val scalaTestVersion = "3.0.4"
+  private val pegdownVersion = "1.6.0"
+
+  val compile: Seq[ModuleID] = Seq(
     ws,
-    "uk.gov.hmrc" %% "bootstrap-play-25" % "1.7.0"
+    "uk.gov.hmrc" %% "bootstrap-play-25" % play25Bootstrap
   )
 
-  def test(scope: String = "test") = Seq(
-    "uk.gov.hmrc" %% "hmrctest" % "3.0.0" % scope,
-    "org.scalatest" %% "scalatest" % "3.0.4" % scope,
-    "org.pegdown" % "pegdown" % "1.6.0" % scope,
-
-    "com.typesafe.play" %% "play-test" % PlayVersion.current % scope
+  def test(scope: String): Seq[ModuleID] = Seq(
+    "uk.gov.hmrc" %% "hmrctest" % hmrcTestVersion % scope,
+    "org.pegdown" % "pegdown" % pegdownVersion % scope,
+    "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
+    "org.scalatest" %% "scalatest" % scalaTestVersion % scope
   )
+
+  def apply(): Seq[ModuleID] = compile ++ test("test")
 
 }
