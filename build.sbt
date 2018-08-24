@@ -1,29 +1,18 @@
-import TestPhases.oneForkedJvmPerTest
-import uk.gov.hmrc.DefaultBuildSettings.addTestReportOption
+import play.sbt.PlayImport.PlayKeys.playDefaultPort
+import uk.gov.hmrc.SbtArtifactory
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
+import uk.gov.hmrc.versioning.SbtGitVersioning
 
-val appName = "mobile-auth-stub"
+val appName: String = "mobile-auth-stub"
 
 lazy val microservice = Project(appName, file("."))
-  .enablePlugins(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin)
+  .enablePlugins(Seq(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory): _*)
+  .settings(publishingSettings: _*)
+  .settings(routesGenerator := StaticRoutesGenerator)
   .settings(
-    libraryDependencies              ++= AppDependencies(),
-    evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false)
-  )
-  .settings(
-    publishingSettings: _*
-  )
-  .configs(IntegrationTest)
-  .settings(inConfig(IntegrationTest)(Defaults.itSettings): _*)
-  .settings(
-    Keys.fork in IntegrationTest                  := false,
-    unmanagedSourceDirectories in IntegrationTest := (baseDirectory in IntegrationTest) (base => Seq(base / "it")).value,
-    testGrouping in IntegrationTest               := oneForkedJvmPerTest((definedTests in IntegrationTest).value),
-    parallelExecution in IntegrationTest          := false,
-    addTestReportOption(IntegrationTest, "int-test-reports")
-  )
-  .settings(
+    majorVersion := 0,
+    playDefaultPort := 9025,
+    libraryDependencies ++= AppDependencies(),
+    evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
     resolvers += Resolver.jcenterRepo
   )
-
-PlayKeys.playDefaultPort := 9025
