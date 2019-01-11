@@ -1,3 +1,3 @@
 # microservice specific routes
 
-GET        /gg/sign-in             @uk.gov.hmrc.mobileauthstub.controllers.AuthStubController.signIn()
+GET        /gg/sign-in             uk.gov.hmrc.mobileauthstub.controllers.AuthStubController.signIn()
