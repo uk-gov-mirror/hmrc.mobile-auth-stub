@@ -17,15 +17,33 @@
 package uk.gov.hmrc.mobileauthstub.controllers
 
 import play.api.http.Status
+import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.mobileauthstub.views.html.sign_in_response
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
+import uk.gov.hmrc.play.test.UnitSpec
 
-class AuthStubControllerSpec extends UnitSpec with WithFakeApplication {
+import scala.concurrent.ExecutionContext
+import scala.concurrent.ExecutionContext.Implicits.global
 
-  val fakeRequest = FakeRequest("GET", "/gg/sign-in")
-  val controller = new AuthStubController()
+class AuthStubControllerSpec extends UnitSpec {
+
+  private val messagesActionBuilder: MessagesActionBuilder = new DefaultMessagesActionBuilderImpl(stubBodyParser[AnyContent](), stubMessagesApi())
+  private val cc                                           = stubControllerComponents()
+
+  private val mcc: MessagesControllerComponents = DefaultMessagesControllerComponents(
+    messagesActionBuilder,
+    DefaultActionBuilder(stubBodyParser[AnyContent]()),
+    cc.parsers,
+    cc.messagesApi,
+    cc.langs,
+    cc.fileMimeTypes,
+    ExecutionContext.global
+  )
+
+  val controller = new AuthStubController(mcc)
+
+  val fakeRequest: FakeRequest[AnyContent] = FakeRequest("GET", "/gg/sign-in")
 
   "GET /gg/sign-in" should {
     "return 200 and an html page with a success code" in {

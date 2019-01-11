@@ -8,7 +8,6 @@ val appName: String = "mobile-auth-stub"
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(Seq(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory): _*)
   .settings(publishingSettings: _*)
-  .settings(routesGenerator := StaticRoutesGenerator)
   .settings(
     majorVersion := 0,
     scalaVersion := "2.11.12",

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.mobileauthstub.controllers
 
-import javax.inject.Singleton
+import javax.inject.{Inject, Singleton}
 import play.api.mvc._
 import uk.gov.hmrc.mobileauthstub.views.html.sign_in_response
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -24,10 +24,10 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import scala.concurrent.Future
 
 @Singleton()
-class AuthStubController extends FrontendController {
+class AuthStubController @Inject()(cc: MessagesControllerComponents)
+  extends FrontendController(cc) {
 
-  def signIn(): Action[AnyContent] = Action.async { implicit request =>
+  def signIn(): Action[AnyContent] = Action.async { implicit request: MessagesRequest[AnyContent] =>
     Future successful Ok(sign_in_response())
   }
-
 }
