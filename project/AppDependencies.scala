@@ -4,7 +4,7 @@ import sbt._
 object AppDependencies {
 
   private val play26Bootstrap          = "0.34.0"
-  private val hmrcTestVersion          = "3.4.0-play-26"
+  private val hmrcTestVersion          = "3.9.0-play-26"
   private val scalaTestVersion         = "3.0.5"
   private val scalaTestPlusPlayVersion = "3.1.2"
   private val pegdownVersion           = "1.6.0"
